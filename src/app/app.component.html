@@ -2,8 +2,9 @@
     <h1>Smarthard</h1>
 
     <span class="fill-remaining-space"></span>
-    <button mat-button>Новости</button>
-    <button mat-button>Проекты</button>
+    <button mat-button routerLink="/">Новости</button>
+    <button mat-button routerLink="/">Проекты</button>
 </mat-toolbar>
+<mat-progress-bar *ngIf="loading" color="accent" mode="indeterminate"></mat-progress-bar>
 
 <router-outlet></router-outlet>
