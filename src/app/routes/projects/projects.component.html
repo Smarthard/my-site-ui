@@ -1,0 +1,9 @@
+<mat-card *ngFor="let repo of repos">
+  <mat-card-header>
+    <mat-card-title>{{repo.name}}</mat-card-title>
+    <span class="fill-remaining-space"></span>
+  </mat-card-header>
+  <mat-card-content *ngIf="repo.description !== undefined">
+    {{repo.description}}
+  </mat-card-content>
+</mat-card>
