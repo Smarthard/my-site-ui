@@ -9,4 +9,8 @@ export class GithubService {
     public getMyRepos() {
         return this.http.get('https://api.github.com/users/Smarthard/repos');
     }
+
+    public getRepoInfo(fork: string) {
+        return this.http.get(fork);
+    }
 }

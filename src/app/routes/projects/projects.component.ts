@@ -16,12 +16,29 @@ export class ProjectsComponent implements OnInit {
     this.githbService.getMyRepos().subscribe(
       res => {
           for (let obj in res) {
-            this.repos.push(new GitRepository(res[obj]));
+              let repo: GitRepository = new GitRepository(res[obj]);
+
+              if (repo.fork) {
+                  this.githbService.getRepoInfo(repo.url).subscribe(
+                      res => {
+                          repo = new GitRepository(res);
+                          this.repos.push(repo);
+                      },
+                      err => {
+                          console.error(err);
+                      }
+                  )
+              } else {
+                  this.repos.push(repo);
+              }
           }
       },
       err => {
-          console.error(err)
+          console.error(err);
       });
+    this.repos.sort((a, b) => {
+        return a.name.localeCompare(b.name);
+    })
   }
 
   protected colorizedLang(lang: String) {
