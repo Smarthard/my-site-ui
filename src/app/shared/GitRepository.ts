@@ -25,7 +25,7 @@ export class GitRepository {
         this.forkedFrom = json.forkedFrom;
         this.forksCount = json.forksCount;
         this.openIssuesCount = json.openIssuesCount;
-        this.license = json.license;
+        this.license = json.license != null ? json.license.name : null;
         this.watchers = json.watchers;
     }
 }

@@ -1,0 +1,36 @@
+mat-card {
+    margin: 1%;
+}
+
+mat-chip {
+    color: white !important;
+}
+
+span {
+    margin: 5px;
+}
+
+.black {
+    background: black;
+    font-weight: 500;
+}
+
+.chocolate {
+    background: chocolate;
+}
+
+.darkblue {
+    background: darkblue;
+}
+
+.gray {
+    background: gray;
+}
+
+.gold {
+    background: gold;
+}
+
+.yellowgreen {
+    background: yellowgreen;
+}

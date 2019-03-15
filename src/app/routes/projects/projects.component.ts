@@ -16,7 +16,7 @@ export class ProjectsComponent implements OnInit {
     this.githbService.getMyRepos().subscribe(
       res => {
           for (let obj in res) {
-            this.repos.push(res[obj]);
+            this.repos.push(new GitRepository(res[obj]));
           }
       },
       err => {
@@ -24,4 +24,14 @@ export class ProjectsComponent implements OnInit {
       });
   }
 
+  protected colorizedLang(lang: String) {
+    switch (lang.toLowerCase()) {
+        case "c":           return "black";
+        case "java":        return "chocolate";
+        case "python":      return "darkblue";
+        case "javascript":  return "gold";
+        case "shell":       return "yellowgreen";
+        default:            return "gray";
+    }
+  }
 }
