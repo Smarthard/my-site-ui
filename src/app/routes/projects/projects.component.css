@@ -10,6 +10,19 @@ span {
     margin: 5px;
 }
 
+a:link {
+    color: #444444;
+    text-decoration-line: none;
+}
+
+a:visited {
+    color: #444444;
+}
+
+a:hover {
+    color: gray;
+}
+
 .black {
     background: #444;
     font-weight: 500;

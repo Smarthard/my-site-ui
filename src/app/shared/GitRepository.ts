@@ -15,7 +15,7 @@ export class GitRepository {
 
     constructor(private json) {
         this.id = json.id;
-        this.url = json.url;
+        this.url = json.svn_url;
         this.name = json.name;
         this.isPrivate = json.isPrivate;
         this.description = json.description;
