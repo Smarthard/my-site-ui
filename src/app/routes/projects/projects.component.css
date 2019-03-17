@@ -11,16 +11,18 @@ span {
 }
 
 a:link {
-    color: #444444;
+    color: royalblue;
     text-decoration-line: none;
 }
 
 a:visited {
-    color: #444444;
+    color: royalblue;
 }
 
 a:hover {
-    color: gray;
+    color: royalblue;
+    text-decoration-line: underline;
+    text-decoration-style: solid;
 }
 
 .black {
