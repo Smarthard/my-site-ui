@@ -1,19 +1,19 @@
 export class GitRepository {
-    readonly id: String;
+    readonly id: string;
     readonly url: string;
     readonly svn_url: URL;
     readonly name: string;
     readonly isPrivate: boolean;
-    readonly description: String;
+    readonly description: string;
     readonly createdDate: Date;
     readonly updatedDate: Date;
-    readonly language: String;
+    readonly language: string;
     readonly fork: boolean;
     readonly origin: URL;
-    readonly origin_name: String;
+    readonly origin_name: string;
     readonly forksCount: bigint;
     readonly openIssuesCount: bigint;
-    readonly license: String;
+    readonly license: string;
     readonly watchers: bigint;
 
     constructor(private json) {

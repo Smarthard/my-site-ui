@@ -34,3 +34,7 @@ span {
 .yellowgreen {
     background: yellowgreen;
 }
+
+#filters_controls {
+    text-align: right;
+}

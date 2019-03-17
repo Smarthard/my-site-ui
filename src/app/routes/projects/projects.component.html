@@ -4,8 +4,12 @@
         <span *ngIf="repo.fork">[forked from <a href="{{repo.origin}}">{{ repo.origin_name }}</a> ]</span>
         <span class="fill-remaining-space"></span>
         <mat-chip-list>
-            <mat-chip *ngIf="repo.language != null" [ngClass]="colorizedLang(repo.language)">{{ repo.language }}</mat-chip>
-            <mat-chip *ngIf="repo.license != null" color="primary" selected>{{ repo.license }}</mat-chip>
+            <mat-chip *ngIf="repo.language != null" [ngClass]="colorizedLang(repo.language)" (click)="addFilter('lang', repo.language)">
+                {{ repo.language }}
+            </mat-chip>
+            <mat-chip *ngIf="repo.license != null" color="primary" selected (click)="addFilter('pl', repo.license)">
+                {{ repo.license }}
+            </mat-chip>
         </mat-chip-list>
     </mat-card-header>
     <mat-card-content>
@@ -14,3 +18,10 @@
         <ng-template #noDescription>No description provided</ng-template>
     </mat-card-content>
 </mat-card>
+<div id="filters_controls">
+    Фильтры:
+    <span *ngIf="langFilter != ''">{{ langFilter }}</span>
+    <span *ngIf="licenseFilter != ''">{{ licenseFilter }}</span>
+    <span *ngIf="unfiltered">[Нет]</span>
+    <button mat-button (click)="resetFilters()" *ngIf="!unfiltered">Сбросить</button>
+</div>
