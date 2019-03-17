@@ -10,21 +10,6 @@ span {
     margin: 5px;
 }
 
-a:link {
-    color: royalblue;
-    text-decoration-line: none;
-}
-
-a:visited {
-    color: royalblue;
-}
-
-a:hover {
-    color: royalblue;
-    text-decoration-line: underline;
-    text-decoration-style: solid;
-}
-
 .black {
     background: #444;
     font-weight: 500;

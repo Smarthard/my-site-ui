@@ -9,3 +9,18 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .fill-remaining-space {
     flex: 1 1 auto;
 }
+
+a:link {
+    color: royalblue;
+    text-decoration-line: none;
+}
+
+a:visited {
+    color: royalblue;
+}
+
+a:hover {
+    color: royalblue;
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+}
