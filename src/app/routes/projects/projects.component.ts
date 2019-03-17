@@ -36,9 +36,6 @@ export class ProjectsComponent implements OnInit {
       err => {
           console.error(err);
       });
-    this.repos.sort((a, b) => {
-        return a.name.localeCompare(b.name);
-    })
   }
 
   protected colorizedLang(lang: String) {
