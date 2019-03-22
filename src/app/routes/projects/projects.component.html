@@ -1,7 +1,7 @@
 <mat-card *ngFor="let repo of repos">
     <mat-card-header>
         <mat-card-title><a href="{{ repo.svn_url }}" target="_blank">{{ repo.name }}</a></mat-card-title>
-        <span *ngIf="repo.fork">[forked from <a href="{{repo.origin}}">{{ repo.origin_name }}</a> ]</span>
+        <span *ngIf="repo.fork">[ forked from <a href="{{repo.origin}}">{{ repo.origin_name }}</a> ]</span>
         <span class="fill-remaining-space"></span>
         <mat-chip-list>
             <mat-chip *ngIf="repo.language != null" [ngClass]="colorizedLang(repo.language)" (click)="addFilter('lang', repo.language)">
