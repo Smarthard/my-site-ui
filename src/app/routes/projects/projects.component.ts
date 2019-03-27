@@ -36,32 +36,12 @@ export class ProjectsComponent implements OnInit {
   }
 
   ngOnInit() {
-      this.repos = [];
-
-      this.githubService.getMyRepos().subscribe(
-          res => {
-              for (let obj in res) {
-                  let repo: GitRepository = new GitRepository(res[obj]);
-
-                  if (repo.fork) {
-                      this.githubService.getRepoInfo(repo.url).subscribe(
-                          res => {
-                              repo = new GitRepository(res);
-                              this.repos.push(repo);
-                          },
-                          err => {
-                              console.error(err);
-                          })
-                  } else {
-                      this.repos.push(repo);
-                  }
-              }
-          },
-          err => {
-              console.error(err);
-          });
-
-      this.loadedRepos = this.repos;
+      this.githubService.getMyRepos().then((res) => {
+          this.repos = res;
+          this.loadedRepos = this.repos;
+      }).catch((err) => {
+          console.error(err);
+      });
   }
 
   protected colorizedLang(lang: String) {
