@@ -9,28 +9,18 @@ import {ActivatedRoute, Router} from "@angular/router";
   styleUrls: ['./projects.component.css']
 })
 export class ProjectsComponent implements OnInit {
-  private loadedRepos: GitRepository[];
-  private unfiltered: boolean = true;
-  protected repos: GitRepository[];
-  protected langFilter: string = '';
-  protected licenseFilter: string = '';
+  private repos: GitRepository[] = [];
+  private filters: { lang?: string; pl?: string } = {};
 
   constructor(private githubService: GithubService, private route: ActivatedRoute, private router: Router) {
       this.router.events.subscribe(() => {
           this.route.queryParams.subscribe(params => {
-              this.langFilter = params['lang'];
-              this.licenseFilter = params['pl'];
-              this.repos = this.loadedRepos;
+              this.filters = {
+                  lang: params['lang'],
+                  pl: params['pl']
+              };
 
-              if (this.langFilter != undefined && this.repos != undefined) {
-                  this.unfiltered = false;
-                  this.repos = this.repos.filter(repo => this.langFilter.includes(repo.language) );
-              }
-
-              if (this.licenseFilter != undefined && this.repos != undefined) {
-                  this.unfiltered = false;
-                  this.repos = this.repos.filter(repo => this.licenseFilter.includes(repo.license) );
-              }
+              this.filterRepos()
           });
       });
   }
@@ -38,7 +28,6 @@ export class ProjectsComponent implements OnInit {
   ngOnInit() {
       this.githubService.getMyRepos().then((res) => {
           this.repos = res;
-          this.loadedRepos = this.repos;
       }).catch((err) => {
           console.error(err);
       });
@@ -65,12 +54,15 @@ export class ProjectsComponent implements OnInit {
       }
   }
 
-  protected resetFilters() {
-      console.log(this.langFilter + " ---- " + this.licenseFilter);
-      this.langFilter = '';
-      this.licenseFilter = '';
-      this.unfiltered = true;
+  private filterRepos() {
+      if (this.repos.length > 0) {
+          this.githubService.getFilteredRepos(this.filters).then(res => {
+              this.repos = res;
+          })
+      }
+  }
 
-      this.router.navigate(['/projects'], {})
+  protected resetFilters() {
+      this.router.navigate(['/projects'], {});
   }
 }

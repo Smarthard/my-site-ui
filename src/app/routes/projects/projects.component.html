@@ -20,8 +20,8 @@
 </mat-card>
 <div id="filters_controls">
     Фильтры:
-    <span *ngIf="langFilter != ''">{{ langFilter }}</span>
-    <span *ngIf="licenseFilter != ''">{{ licenseFilter }}</span>
-    <span *ngIf="unfiltered">[Нет]</span>
-    <button mat-button (click)="resetFilters()" *ngIf="!unfiltered">Сбросить</button>
+    <span *ngIf="filters.lang != null">{{ filters.lang }}</span>
+    <span *ngIf="filters.pl != null">{{ filters.pl }}</span>
+    <span *ngIf="!filters.lang && !filters.pl">[Нет]</span>
+    <button mat-button (click)="resetFilters()" *ngIf="filters.lang || filters.pl">Сбросить</button>
 </div>

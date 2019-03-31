@@ -2,49 +2,83 @@ import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {GitRepository} from "../shared/GitRepository";
 
-@Injectable()
+@Injectable({
+    providedIn: "root"
+})
 export class GithubService {
 
-    private repositories: GitRepository[] = [];
+    private static repositories: GitRepository[] = [];
 
     constructor(private http: HttpClient) {}
 
     public getMyRepos(): Promise<GitRepository[]> {
         return new Promise<GitRepository[]>((resolve, reject) => {
-            if (this.repositories.length == 0) {
+            if (GithubService.repositories.length == 0) {
                 this.http.get('https://api.github.com/users/Smarthard/repos').subscribe(
-                    (res) => {
-                        for (let obj in res) {
-                            let repo: GitRepository = new GitRepository(res[obj]);
+                (res) => {
+                    for (let obj in res) {
+                        let repo: GitRepository = new GitRepository(res[obj]);
 
-                            if (repo.fork) {
-                                this.getRepoInfo(repo.url).subscribe(
-                                    res => {
-                                        repo = new GitRepository(res);
-                                        this.repositories.push(repo);
-                                    },
-                                    err => {
-                                        console.error(err);
-                                    })
-                            } else {
-                                this.repositories.push(repo);
-                            }
+                        if (repo.fork) {
+                            this.getRepoInfo(repo.url).then(
+                                res => {
+                                    GithubService.repositories.push(res);
+                                },
+                                err => {
+                                    console.error(err);
+                                });
+                        } else {
+                            GithubService.repositories.push(repo);
                         }
-
-                        resolve(this.repositories);
-                    },
-                    (err) => {
-                        console.error(err);
-                        reject(err);
                     }
-                )
+
+                    resolve(GithubService.repositories);
+                },
+                (err) => {
+                    console.error(err);
+                    reject(err);
+                });
             } else {
-                resolve(this.repositories);
+                resolve(GithubService.repositories);
             }
         });
     }
 
-    private getRepoInfo(fork: string) {
-        return this.http.get(fork);
+    public getFilteredRepos(filters: { lang?: string; pl?: string}): Promise<GitRepository[]> {
+        return new Promise<GitRepository[]>((resolve) => {
+            let fRepos: GitRepository[] = [];
+
+            this.getMyRepos().then(res => {
+                fRepos = res;
+
+                if (filters.lang) {
+                    fRepos = fRepos.filter(value => {
+                        return filters.lang.includes(value.language);
+                    });
+                }
+
+                if (filters.pl) {
+                    fRepos = fRepos.filter(value => {
+                        return filters.pl.includes(value.license);
+                    });
+                }
+            }).catch(reason => {
+                console.error(reason);
+            }).finally(() => {
+                resolve(fRepos);
+            });
+        });
+    }
+
+    private getRepoInfo(repo: string): Promise<GitRepository> {
+        return new Promise<GitRepository>((resolve, reject) => {
+            this.http.get(repo).subscribe(
+            res => {
+                resolve(new GitRepository(res));
+            },
+            err => {
+                reject(err);
+            });
+        });
     }
 }
