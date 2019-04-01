@@ -7,8 +7,10 @@ import {
   MatChipsModule,
   MatDividerModule,
   MatGridListModule,
+  MatInputModule,
   MatProgressBarModule,
-  MatToolbarModule
+  MatSelectModule,
+  MatToolbarModule,
 } from "@angular/material";
 import {MatCardModule} from "@angular/material/card";
 
@@ -20,6 +22,7 @@ import {NotFoundComponent} from './routes/notfound/notfound.component';
 import {ProjectsComponent} from './routes/projects/projects.component';
 import {GithubService} from "./services/GithubService";
 import {HttpClientModule} from "@angular/common/http";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -40,7 +43,10 @@ import {HttpClientModule} from "@angular/common/http";
     MatDividerModule,
     MatGridListModule,
     MatChipsModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
+    MatSelectModule,
+    MatInputModule
   ],
   providers: [GithubService],
   bootstrap: [AppComponent]

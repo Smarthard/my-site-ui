@@ -1,27 +1,38 @@
-<mat-card *ngFor="let repo of repos">
-    <mat-card-header>
-        <mat-card-title><a href="{{ repo.svn_url }}" target="_blank">{{ repo.name }}</a></mat-card-title>
-        <span *ngIf="repo.fork">[ forked from <a href="{{repo.origin}}">{{ repo.origin_name }}</a> ]</span>
-        <span class="fill-remaining-space"></span>
-        <mat-chip-list>
-            <mat-chip *ngIf="repo.language != null" [ngClass]="colorizedLang(repo.language)" (click)="addFilter('lang', repo.language)">
-                {{ repo.language }}
-            </mat-chip>
-            <mat-chip *ngIf="repo.license != null" color="primary" selected (click)="addFilter('pl', repo.license)">
-                {{ repo.license }}
-            </mat-chip>
-        </mat-chip-list>
-    </mat-card-header>
-    <mat-card-content>
-        <div *ngIf="repo.description != null; then description else noDescription"></div>
-        <ng-template #description>{{repo.description}}</ng-template>
-        <ng-template #noDescription>No description provided</ng-template>
-    </mat-card-content>
-</mat-card>
-<div id="filters_controls">
-    Фильтры:
-    <span *ngIf="filters.lang != null">{{ filters.lang }}</span>
-    <span *ngIf="filters.pl != null">{{ filters.pl }}</span>
-    <span *ngIf="!filters.lang && !filters.pl">[Нет]</span>
-    <button mat-button (click)="resetFilters()" *ngIf="filters.lang || filters.pl">Сбросить</button>
+<mat-toolbar id="filters_controls">
+    <form>
+        <label>Фильтры
+            <mat-form-field>
+                <input matInput [(ngModel)]="filters.lang" [ngModelOptions]="{standalone: true}"  placeholder="Язык Программирования">
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput [(ngModel)]="filters.pl" [ngModelOptions]="{standalone: true}" placeholder="Лицензия">
+            </mat-form-field>
+
+            <button mat-button (click)="resetFilters()">Сбросить</button>
+        </label>
+    </form>
+</mat-toolbar>
+
+<div *ngFor="let repo of repos">
+    <mat-card *ngIf="isFilterPositive(repo)">
+        <mat-card-header>
+            <mat-card-title><a href="{{ repo.svn_url }}" target="_blank">{{ repo.name }}</a></mat-card-title>
+            <span *ngIf="repo.fork">[ forked from <a href="{{repo.origin}}">{{ repo.origin_name }}</a> ]</span>
+            <span class="fill-remaining-space"></span>
+            <mat-chip-list>
+                <mat-chip *ngIf="repo.language != null" [ngClass]="colorizedLang(repo.language)" (click)="addFilter('lang', repo.language)">
+                    {{ repo.language }}
+                </mat-chip>
+                <mat-chip *ngIf="repo.license != null" color="primary" selected (click)="addFilter('pl', repo.license)">
+                    {{ repo.license }}
+                </mat-chip>
+            </mat-chip-list>
+        </mat-card-header>
+        <mat-card-content>
+            <div *ngIf="repo.description != null; then description else noDescription"></div>
+            <ng-template #description>{{repo.description}}</ng-template>
+            <ng-template #noDescription>No description provided</ng-template>
+        </mat-card-content>
+    </mat-card>
 </div>

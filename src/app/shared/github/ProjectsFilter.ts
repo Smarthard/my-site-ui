@@ -1,6 +1,6 @@
 export class ProjectsFilter {
-    readonly lang: string;
-    readonly pl: string;
+    public lang: string;
+    public pl: string;
 
     constructor(private filters: {lang?: string, pl?: string}) {
         this.lang = filters.lang;

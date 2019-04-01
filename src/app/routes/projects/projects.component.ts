@@ -20,8 +20,6 @@ export class ProjectsComponent implements OnInit {
                   lang: params['lang'],
                   pl: params['pl']
               });
-
-              this.filterRepos()
           });
       });
   }
@@ -55,15 +53,21 @@ export class ProjectsComponent implements OnInit {
       }
   }
 
-  private filterRepos() {
-      if (this.repos.length > 0) {
-          this.githubService.getFilteredRepos(this.filters).then(res => {
-              this.repos = res;
-          })
+  isFilterPositive(repo: GitRepository) {
+      let isPositive: boolean = true;
+
+      if (this.filters.pl) {
+          isPositive = repo.license ? repo.license.toLowerCase().includes(this.filters.pl.toLowerCase()) : false;
       }
+
+      if (this.filters.lang) {
+          isPositive = repo.language ? repo.language.toLowerCase().includes(this.filters.lang.toLowerCase()) : false;
+      }
+
+      return isPositive;
   }
 
   protected resetFilters() {
-      this.router.navigate(['/projects'], {});
+      this.filters = new ProjectsFilter({});
   }
 }

@@ -10,6 +10,12 @@ span {
     margin: 5px;
 }
 
+mat-form-field {
+    width: 90%;
+    padding: 5px;
+    font-size: 0.7vmax;
+}
+
 .black {
     background: #444;
     font-weight: 500;
