@@ -6,4 +6,8 @@ export class ProjectsFilter {
         this.lang = filters.lang;
         this.pl = filters.pl;
     }
+
+    public isEmpty(): boolean {
+        return (this.lang == null && this.pl == null) || (this.lang == "" && this.pl == "");
+    }
 }

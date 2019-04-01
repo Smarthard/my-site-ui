@@ -1,4 +1,4 @@
-<mat-toolbar id="filters_controls">
+<mat-toolbar id="filters_controls" *ngIf="!filters.isEmpty()">
     <form>
         <label>Фильтры
             <mat-form-field>
