@@ -1,7 +1,6 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {GitRepository} from "../shared/github/GitRepository";
-import {ProjectsFilter} from "../shared/github/ProjectsFilter";
 
 @Injectable({
     providedIn: "root"
@@ -42,32 +41,6 @@ export class GithubService {
             } else {
                 resolve(GithubService.repositories);
             }
-        });
-    }
-
-    public getFilteredRepos(filters: ProjectsFilter): Promise<GitRepository[]> {
-        return new Promise<GitRepository[]>((resolve) => {
-            let fRepos: GitRepository[] = [];
-
-            this.getMyRepos().then(res => {
-                fRepos = res;
-
-                if (filters.lang) {
-                    fRepos = fRepos.filter(value => {
-                        return filters.lang.includes(value.language);
-                    });
-                }
-
-                if (filters.pl) {
-                    fRepos = fRepos.filter(value => {
-                        return filters.pl.includes(value.license);
-                    });
-                }
-            }).catch(reason => {
-                console.error(reason);
-            }).finally(() => {
-                resolve(fRepos);
-            });
         });
     }
 
