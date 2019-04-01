@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {GitRepository} from "../../shared/GitRepository";
 import {GithubService} from "../../services/GithubService";
 import {ActivatedRoute, Router} from "@angular/router";
+import {ProjectsFilter} from "../../shared/ProjectsFilter";
 
 @Component({
   selector: 'app-projects',
@@ -10,15 +11,15 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class ProjectsComponent implements OnInit {
   private repos: GitRepository[] = [];
-  private filters: { lang?: string; pl?: string } = {};
+  private filters: ProjectsFilter = new ProjectsFilter({});
 
   constructor(private githubService: GithubService, private route: ActivatedRoute, private router: Router) {
       this.router.events.subscribe(() => {
           this.route.queryParams.subscribe(params => {
-              this.filters = {
+              this.filters = new ProjectsFilter({
                   lang: params['lang'],
                   pl: params['pl']
-              };
+              });
 
               this.filterRepos()
           });
