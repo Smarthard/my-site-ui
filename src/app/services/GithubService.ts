@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
-import {GitRepository} from "../shared/GitRepository";
-import {ProjectsFilter} from "../shared/ProjectsFilter";
+import {GitRepository} from "../shared/github/GitRepository";
+import {ProjectsFilter} from "../shared/github/ProjectsFilter";
 
 @Injectable({
     providedIn: "root"

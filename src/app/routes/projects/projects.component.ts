@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {GitRepository} from "../../shared/GitRepository";
+import {GitRepository} from "../../shared/github/GitRepository";
 import {GithubService} from "../../services/GithubService";
 import {ActivatedRoute, Router} from "@angular/router";
-import {ProjectsFilter} from "../../shared/ProjectsFilter";
+import {ProjectsFilter} from "../../shared/github/ProjectsFilter";
 
 @Component({
   selector: 'app-projects',
