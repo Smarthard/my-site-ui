@@ -44,24 +44,28 @@ export class ProjectsComponent implements OnInit {
   }
 
   protected addFilter(filter: string, byValue: string) {
-      const value = "'" + byValue + "'";
-
       switch (filter) {
-          case "lang": this.router.navigate(['/projects'], { queryParams: { "lang": value } }); break;
-          case "pl": this.router.navigate(['/projects'], { queryParams: { "pl": value} }); break;
+          case "lang": this.filters.lang = byValue; break;
+          case "pl": this.filters.pl = byValue; break;
           default: break;
       }
   }
 
-  isFilterPositive(repo: GitRepository) {
+  protected isFilterPositive(repo: GitRepository) {
       let isPositive: boolean = true;
 
-      if (this.filters.pl) {
-          isPositive = repo.license ? repo.license.toLowerCase().includes(this.filters.pl.toLowerCase()) : false;
+      if (isPositive && this.filters.pl) {
+          const filter: string = this.filters.pl.toLowerCase();
+          const license: string = repo.license ? repo.license.toLowerCase() : '';
+
+          isPositive = filter !== '' && license.includes(filter);
       }
 
-      if (this.filters.lang) {
-          isPositive = repo.language ? repo.language.toLowerCase().includes(this.filters.lang.toLowerCase()) : false;
+      if (isPositive && this.filters.lang) {
+          const filter: string = this.filters.lang.toLowerCase();
+          const lang: string = repo.language ? repo.language.toLowerCase() : '';
+
+          isPositive = filter !== '' && lang.includes(filter);
       }
 
       return isPositive;

@@ -2,11 +2,11 @@
     <form>
         <label>Фильтры
             <mat-form-field>
-                <input matInput [(ngModel)]="filters.lang" [ngModelOptions]="{standalone: true}"  placeholder="Язык Программирования">
+                <input matInput [(ngModel)]="filters.lang" [ngModelOptions]="{standalone: true}">
             </mat-form-field>
 
             <mat-form-field>
-                <input matInput [(ngModel)]="filters.pl" [ngModelOptions]="{standalone: true}" placeholder="Лицензия">
+                <input matInput [(ngModel)]="filters.pl" [ngModelOptions]="{standalone: true}">
             </mat-form-field>
 
             <button mat-button (click)="resetFilters()">Сбросить</button>
