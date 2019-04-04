@@ -12,15 +12,27 @@ export class ArticlesService {
 
   constructor(private http: HttpClient) {}
 
-  public static create(article: Article): Promise<Article> {
+  public create(article: Article): Promise<Article> {
     return new Promise<Article>((resolve, reject) => {
-
+      this.http.post(ArticlesService.API, article).subscribe(value => {
+        resolve(new Article(value));
+      }, err => {
+        reject(err);
+      })
     });
   }
 
   public get(id: string): Promise<Article> {
     return new Promise<Article>((resolve, reject) => {
-
+      if (id) {
+        this.http.get(ArticlesService.API + "/" + id).subscribe(value => {
+          resolve(new Article(value));
+        }, err => {
+          reject(err);
+        })
+      } else {
+        reject("Article id is not specified")
+      }
     });
   }
 
@@ -52,13 +64,21 @@ export class ArticlesService {
 
   public update(article: Article): Promise<Boolean> {
     return new Promise<Boolean>((resolve, reject) => {
-
+      this.http.put(ArticlesService.API, article).subscribe(value => {
+        resolve(true)
+      }, err => {
+        reject(false)
+      })
     });
   }
 
-  public delete(article: Article): Promise<Boolean> {
+  public delete(id: string): Promise<Boolean> {
     return new Promise<Boolean>((resolve, reject) => {
-
+      this.http.delete(ArticlesService.API + "/" + id).subscribe(value => {
+        resolve(true);
+      }, err => {
+        reject(false);
+      })
     })
   }
 
