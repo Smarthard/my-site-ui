@@ -9,8 +9,8 @@ import {ProjectsFilter} from "../../shared/github/ProjectsFilter";
   styleUrls: ['./projects.component.css']
 })
 export class ProjectsComponent implements OnInit {
-  private repos: GitRepository[] = [];
-  private filters: ProjectsFilter = new ProjectsFilter({});
+  public repos: GitRepository[] = [];
+  public filters: ProjectsFilter = new ProjectsFilter({});
 
   constructor(private githubService: GithubService) {}
 
@@ -48,14 +48,14 @@ export class ProjectsComponent implements OnInit {
           const filter: string = this.filters.pl.toLowerCase();
           const license: string = repo.license ? repo.license.toLowerCase() : '';
 
-          isPositive = filter !== '' && license.includes(filter);
+          isPositive = filter !== '' && license.startsWith(filter);
       }
 
       if (isPositive && this.filters.lang) {
           const filter: string = this.filters.lang.toLowerCase();
           const lang: string = repo.language ? repo.language.toLowerCase() : '';
 
-          isPositive = filter !== '' && lang.includes(filter);
+          isPositive = filter !== '' && lang.startsWith(filter);
       }
 
       return isPositive;
