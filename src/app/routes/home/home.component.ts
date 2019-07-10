@@ -2,7 +2,7 @@ import {Component, OnInit, SecurityContext} from '@angular/core';
 import {Article} from "../../shared/api/Article";
 import {ArticlesService} from "../../services/api/articles/articles.service";
 import {DomSanitizer} from "@angular/platform-browser";
-import {AuthService} from "../../services/api/auth.service";
+// import {AuthService} from "../../services/api/auth.service";
 import {PageEvent} from "@angular/material";
 
 @Component({
@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
   private allArticlesCount: number = 0;
   private prevPageEvent: PageEvent;
 
-  constructor(private articlesService: ArticlesService, private authService: AuthService, private sanitizer: DomSanitizer) { }
+  constructor(private articlesService: ArticlesService, private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.refresh();
