@@ -3,14 +3,16 @@ import {NgModule} from '@angular/core';
 import {RouterModule} from "@angular/router";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
-  MatButtonModule,
-  MatChipsModule,
-  MatDividerModule,
-  MatGridListModule,
-  MatInputModule,
-  MatProgressBarModule,
-  MatSelectModule,
-  MatToolbarModule,
+    MatButtonModule,
+    MatChipsModule,
+    MatDividerModule,
+    MatGridListModule,
+    MatIconModule,
+    MatInputModule,
+    MatPaginatorModule,
+    MatProgressBarModule,
+    MatSelectModule,
+    MatToolbarModule,
 } from "@angular/material";
 import {MatCardModule} from "@angular/material/card";
 
@@ -31,23 +33,25 @@ import {FormsModule} from "@angular/forms";
     NotFoundComponent,
     ProjectsComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    RouterModule.forRoot(routes),
-    BrowserAnimationsModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatProgressBarModule,
-    MatCardModule,
-    MatDividerModule,
-    MatGridListModule,
-    MatChipsModule,
-    HttpClientModule,
-    FormsModule,
-    MatSelectModule,
-    MatInputModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        RouterModule.forRoot(routes),
+        BrowserAnimationsModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatProgressBarModule,
+        MatCardModule,
+        MatDividerModule,
+        MatGridListModule,
+        MatChipsModule,
+        HttpClientModule,
+        FormsModule,
+        MatSelectModule,
+        MatInputModule,
+        MatPaginatorModule,
+        MatIconModule
+    ],
   providers: [GithubService],
   bootstrap: [AppComponent]
 })

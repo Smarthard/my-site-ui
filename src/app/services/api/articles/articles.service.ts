@@ -8,7 +8,7 @@ import {environment} from "../../../../environments/environment";
 })
 export class ArticlesService {
 
-  static readonly API: string = environment.apiUrl + '/api/articles';
+  static readonly API: string = environment.apiSecureUrl + '/api/articles';
 
   constructor(private http: HttpClient) {}
 
@@ -80,6 +80,16 @@ export class ArticlesService {
         reject(false);
       })
     })
+  }
+
+  public count(): Promise<number> {
+    return new Promise<number>((resolve, reject) => {
+      this.http.post(ArticlesService.API + "/count", {}).subscribe((value: {count: number}) => {
+        resolve(value.count);
+      }, err => {
+        reject(err);
+      });
+    });
   }
 
 }

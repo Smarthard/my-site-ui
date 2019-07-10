@@ -1,15 +1,14 @@
+<mat-paginator [pageSize]="pageSize" [length]="allArticlesCount" (page)="changePage($event)" *ngIf="articles.length > 0 && allArticlesCount / pageSize > 0"></mat-paginator>
+
 <div *ngFor="let article of articles">
     <mat-card>
         <mat-card-header>
             <mat-card-title>
                 {{ article.name | uppercase }}
                 <span class="fill-remaining-space"></span>
-                <button mat-button (click)="remove(article.id)">Удалить</button>
             </mat-card-title>
             <mat-card-subtitle>{{ article.createdAt | date:'dd.MM.y HH:mm' }}</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content [innerHTML]="article.text"></mat-card-content>
     </mat-card>
 </div>
-
-<button mat-button (click)="add()">Добавить</button>
