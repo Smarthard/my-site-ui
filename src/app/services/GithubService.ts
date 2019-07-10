@@ -1,9 +1,9 @@
-import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
-import {GitRepository} from "../shared/github/GitRepository";
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {GitRepository} from '../shared/github/GitRepository';
 
 @Injectable({
-    providedIn: "root"
+    providedIn: 'root'
 })
 export class GithubService {
 
@@ -13,24 +13,23 @@ export class GithubService {
 
     public getMyRepos(): Promise<GitRepository[]> {
         return new Promise<GitRepository[]>((resolve, reject) => {
-            if (GithubService.repositories.length == 0) {
+            if (GithubService.repositories.length === 0) {
                 this.http.get('https://api.github.com/users/Smarthard/repos').subscribe(
-                (res) => {
-                    for (let obj in res) {
-                        let repo: GitRepository = new GitRepository(res[obj]);
+                (res: object[]) => {
+                    res.forEach((element, index) =>  {
+                        const repo: GitRepository = new GitRepository(element);
+                        GithubService.repositories.push(repo);
 
                         if (repo.fork) {
                             this.getRepoInfo(repo.url).then(
-                                res => {
-                                    GithubService.repositories.push(res);
+                                fork => {
+                                    GithubService.repositories[index] = fork;
                                 },
                                 err => {
                                     console.error(err);
                                 });
-                        } else {
-                            GithubService.repositories.push(repo);
                         }
-                    }
+                    });
 
                     resolve(GithubService.repositories);
                 },
