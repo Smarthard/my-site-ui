@@ -14,7 +14,8 @@ export class HomeComponent implements OnInit {
 
   public articles: Article[] = [];
   public pageSize: number = 10;
-  private allArticlesCount: number = 0;
+  public allArticlesCount: number = 0;
+
   private prevPageEvent: PageEvent;
 
   constructor(private articlesService: ArticlesService, private sanitizer: DomSanitizer) { }
