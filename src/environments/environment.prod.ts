@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  apiUrl: 'http://smarthard.net',
+  apiSecureUrl: 'https://smathard.net'
 };
