@@ -4,11 +4,11 @@ import {RouterModule} from "@angular/router";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
     MatButtonModule,
-    MatChipsModule,
+    MatChipsModule, MatDialogModule,
     MatDividerModule,
     MatGridListModule,
     MatIconModule,
-    MatInputModule,
+    MatInputModule, MatMenuModule,
     MatPaginatorModule,
     MatProgressBarModule,
     MatSelectModule,
@@ -23,16 +23,20 @@ import {HomeComponent} from './routes/home/home.component';
 import {NotFoundComponent} from './routes/notfound/notfound.component';
 import {ProjectsComponent} from './routes/projects/projects.component';
 import {GithubService} from "./services/GithubService";
-import {HttpClientModule} from "@angular/common/http";
+import {HttpClientModule, HttpClientXsrfModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
+import {AuthService} from "./services/api/auth.service";
+import {CookieService} from "ngx-cookie-service";
+import {LoginDialogComponent} from './shared/login-dialog/login-dialog.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    NotFoundComponent,
-    ProjectsComponent
-  ],
+    declarations: [
+        AppComponent,
+        HomeComponent,
+        NotFoundComponent,
+        ProjectsComponent,
+        LoginDialogComponent
+    ],
     imports: [
         BrowserModule,
         AppRoutingModule,
@@ -46,13 +50,18 @@ import {FormsModule} from "@angular/forms";
         MatGridListModule,
         MatChipsModule,
         HttpClientModule,
+        HttpClientXsrfModule,
         FormsModule,
         MatSelectModule,
         MatInputModule,
         MatPaginatorModule,
-        MatIconModule
+        MatIconModule,
+        MatDialogModule,
+        MatMenuModule
     ],
-  providers: [GithubService],
-  bootstrap: [AppComponent]
+    providers: [GithubService, AuthService, CookieService],
+    bootstrap: [AppComponent],
+    entryComponents: [LoginDialogComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

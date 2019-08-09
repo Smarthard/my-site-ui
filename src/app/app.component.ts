@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
-import { Event, NavigationCancel, NavigationStart, NavigationEnd, NavigationError, Router } from "@angular/router";
+import {Component} from '@angular/core';
+import {Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from "@angular/router";
+import {AuthService} from "./services/api/auth.service";
+import {MatDialog} from "@angular/material";
+import {LoginDialogComponent} from "./shared/login-dialog/login-dialog.component";
 
 @Component({
   selector: 'app-root',
@@ -10,7 +13,11 @@ export class AppComponent {
   title = 'my-site-ui';
   loading = false;
 
-  constructor(private router: Router) {
+  constructor(
+      private router: Router,
+      private auth: AuthService,
+      private dialog: MatDialog
+  ) {
     this.router.events.subscribe((event: Event) => {
       switch (true) {
         case event instanceof NavigationStart: {
@@ -28,5 +35,14 @@ export class AppComponent {
         default: break;
       }
     })
+  }
+
+  public openLoginDialog() {
+    const loginDialogRef = this.dialog.open(LoginDialogComponent);
+
+    loginDialogRef.afterClosed()
+        .subscribe(result => {
+          console.log(result);
+        })
   }
 }

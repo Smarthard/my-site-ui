@@ -1,5 +1,8 @@
+const DOMAIN = '127.0.0.1';
+
 export const environment = {
     production: false,
-    apiUrl: 'http://127.0.0.1:3001',
-    apiSecureUrl: 'https://127.0.0.1:3443'
+    domain: DOMAIN,
+    apiUrl: `http://${DOMAIN}:3001`,
+    apiSecureUrl: `http://${DOMAIN}:3001`
 };

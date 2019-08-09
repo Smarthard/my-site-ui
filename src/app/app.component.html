@@ -4,6 +4,13 @@
     <span class="fill-remaining-space"></span>
     <button mat-button routerLink="/">Новости</button>
     <button mat-button routerLink="/projects">Проекты</button>
+    <button mat-button *ngIf="!auth.isAuthorized()" (click)="openLoginDialog()">Войти</button>
+    <button mat-icon-button *ngIf="auth.isAuthorized()" [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
+    <mat-menu #menu="matMenu">
+        <ng-template matMenuContent>
+            <button mat-menu-item (click)="auth.logout()">Выйти</button>
+        </ng-template>
+    </mat-menu>
 </mat-toolbar>
 <mat-progress-bar *ngIf="loading" color="accent" mode="indeterminate"></mat-progress-bar>
 

@@ -1,5 +1,8 @@
+const DOMAIN = 'smarthard.net';
+
 export const environment = {
   production: true,
-  apiUrl: 'http://smarthard.net',
-  apiSecureUrl: 'https://smathard.net'
+  domain: DOMAIN,
+  apiUrl: `/`,
+  apiSecureUrl: `/`
 };
