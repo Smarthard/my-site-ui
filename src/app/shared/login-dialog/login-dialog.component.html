@@ -1,10 +1,17 @@
 <h1 mat-dialog-title>Авторизоваться</h1>
 <div mat-dialog-content>
     <mat-form-field>
-        <input matInput type="text" [(ngModel)]="username" placeholder="Логин">
+        <input matInput
+               type="text"
+               [(ngModel)]="username"
+               placeholder="Логин">
     </mat-form-field>
     <mat-form-field>
-        <input matInput type="password" [(ngModel)]="password" (keyup.enter)="login()" placeholder="Пароль">
+        <input matInput
+               type="password"
+               [(ngModel)]="password"
+               (keyup.enter)="login()"
+               placeholder="Пароль">
     </mat-form-field>
 </div>
 <div id="login-dialog-actions" mat-dialog-actions>

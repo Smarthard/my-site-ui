@@ -9,8 +9,8 @@ import {AuthService} from "../../services/api/auth.service";
 })
 export class LoginDialogComponent implements OnInit{
 
-  private username: string;
-  private password: string;
+  username: string;
+  password: string;
 
   constructor(
       private auth: AuthService,
