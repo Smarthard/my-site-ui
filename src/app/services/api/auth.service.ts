@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {User} from "../../shared/api/User";
 import {environment} from "../../../environments/environment";
@@ -9,10 +9,8 @@ import {CookieService} from "ngx-cookie-service";
 })
 export class AuthService {
 
-  static readonly API: string = environment.apiSecureUrl;
-
   // expires, path, secure, sameSite
-  static readonly cookieConfig: Array<any> = [null, '/', environment.domain, environment.production, 'Strict'];
+  static readonly cookieConfig: Array<any> = [null, '/', `.${environment.domain}`, environment.production, 'Strict'];
 
   private user: User = null;
   private user_checked: boolean = false;
@@ -32,7 +30,7 @@ export class AuthService {
             console.error("Could not find user's cookies");
         }
 
-        this.http.get(AuthService.API + '/auth/me', { withCredentials: true})
+        this.http.get('/auth/me', { withCredentials: true })
             .subscribe((res) => {
                 this.setUser(res);
             },
@@ -45,7 +43,7 @@ export class AuthService {
   }
 
   public login(login: string, password: string) {
-    this.http.post(AuthService.API + '/auth/login',
+    this.http.post('/auth/login',
         { login: login,  password: password },
         { withCredentials: true })
         .subscribe((res) => {
@@ -62,7 +60,7 @@ export class AuthService {
   }
 
   public logout() {
-    this.http.get(AuthService.API + '/auth/logout', { withCredentials: true })
+    this.http.get('/auth/logout', { withCredentials: true })
         .subscribe((value: any) => {
             console.log(value.message);
             this.destroyUser();
