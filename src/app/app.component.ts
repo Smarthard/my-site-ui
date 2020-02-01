@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from "@angular/router";
-import {AuthService} from "./services/api/auth.service";
+import {AuthService} from "./services/api/auth/auth.service";
 import {MatDialog} from "@angular/material";
 import {LoginDialogComponent} from "./shared/login-dialog/login-dialog.component";
 

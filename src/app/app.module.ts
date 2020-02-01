@@ -25,7 +25,7 @@ import {ProjectsComponent} from './routes/projects/projects.component';
 import {GithubService} from "./services/GithubService";
 import {HttpClientModule, HttpClientXsrfModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
-import {AuthService} from "./services/api/auth.service";
+import {AuthService} from "./services/api/auth/auth.service";
 import {CookieService} from "ngx-cookie-service";
 import {LoginDialogComponent} from './shared/login-dialog/login-dialog.component';
 
