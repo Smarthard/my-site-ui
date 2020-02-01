@@ -1,13 +1,19 @@
-<mat-paginator [pageSize]="pageSize" [length]="allArticlesCount" (page)="changePage($event)" *ngIf="articles.length > 0 && allArticlesCount / pageSize > 0"></mat-paginator>
+<mat-paginator *ngIf="(articlesCount$ | async) / PAGE_SIZE >= 0"
+               [pageSize]="PAGE_SIZE"
+               [length]="articlesCount$ | async"
+               (page)="paginationEvents.emit($event)"
+               hidePageSize="true"></mat-paginator>
 
-<div *ngFor="let article of articles">
+<div *ngFor="let article of (articles$ | async)">
     <mat-card>
         <mat-card-header>
             <mat-card-title>
                 {{ article.name | uppercase }}
                 <span class="fill-remaining-space"></span>
             </mat-card-title>
-            <mat-card-subtitle>{{ article.createdAt | date:'dd.MM.y HH:mm' }}</mat-card-subtitle>
+            <mat-card-subtitle>
+                {{ article.createdAt | date:'dd.MM.y HH:mm' }}
+            </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content [innerHTML]="article.text"></mat-card-content>
     </mat-card>

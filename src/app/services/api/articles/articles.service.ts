@@ -1,95 +1,53 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Article} from "../../../shared/api/Article";
-import {environment} from "../../../../environments/environment";
+import {HttpClient, HttpParams} from "@angular/common/http";
+import {Article, IArticle} from "../../../shared/api/Article";
+import {Observable} from "rxjs";
+import {map, pluck} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ArticlesService {
 
-  static readonly API: string = environment.apiSecureUrl + '/api/articles';
+  static readonly API = '/api/articles';
+
+  private _mapArticle = map((article: IArticle) => new Article(
+      article.id,
+      article.name,
+      article.text,
+      new Date(article.createdAt)
+      )
+  );
 
   constructor(private http: HttpClient) {}
 
-  public create(article: Article): Promise<Article> {
-    return new Promise<Article>((resolve, reject) => {
-      this.http.post(ArticlesService.API, article).subscribe(value => {
-        resolve(new Article(value));
-      }, err => {
-        reject(err);
-      })
-    });
+  public create(article: Article): Observable<Article> {
+    return this.http.post<Article>(ArticlesService.API, article);
   }
 
-  public get(id: string): Promise<Article> {
-    return new Promise<Article>((resolve, reject) => {
-      if (id) {
-        this.http.get(ArticlesService.API + "/" + id).subscribe(value => {
-          resolve(new Article(value));
-        }, err => {
-          reject(err);
-        })
-      } else {
-        reject("Article id is not specified")
-      }
-    });
+  public getById(id: string): Observable<Article> {
+    return this.http.get<IArticle>(`${ArticlesService.API}/${id}`)
+        .pipe(this._mapArticle);
   }
 
-  public getAll(limit?: number, offset?: number): Promise<Article[]> {
-    return new Promise<Article[]>((resolve, reject) => {
-      let request: string = ArticlesService.API;
-
-      if (limit && offset) {
-        request += "?limit=" + limit + "&offset=" + offset;
-      } else if (limit) {
-        request += "?limit=" + limit;
-      } else if (offset) {
-        request += "?offset=" + offset;
-      }
-
-      this.http.get(request).subscribe(values => {
-        let articles = [];
-
-        for (let value in values) {
-          articles.push(new Article(values[value]));
-        }
-
-        resolve(articles);
-      }, err => {
-        reject(err);
-      });
-    });
+  public getAll(params: HttpParams): Observable<IArticle[]> {
+    return this.http.get<IArticle[]>(ArticlesService.API, { params });
   }
 
-  public update(article: Article): Promise<Boolean> {
-    return new Promise<Boolean>((resolve, reject) => {
-      this.http.put(ArticlesService.API, article).subscribe(value => {
-        resolve(true)
-      }, err => {
-        reject(false)
-      })
-    });
+  public update(article: Article): Observable<Article> {
+    return this.http.put<IArticle>(`${ArticlesService.API}/${article.id}`, article)
+        .pipe(this._mapArticle);
   }
 
-  public delete(id: string): Promise<Boolean> {
-    return new Promise<Boolean>((resolve, reject) => {
-      this.http.delete(ArticlesService.API + "/" + id).subscribe(value => {
-        resolve(true);
-      }, err => {
-        reject(false);
-      })
-    })
+  public delete(id: string): Observable<Article> {
+    return this.http.delete<Article>(`${ArticlesService.API}/${id}`);
   }
 
-  public count(): Promise<number> {
-    return new Promise<number>((resolve, reject) => {
-      this.http.post(ArticlesService.API + "/count", {}).subscribe((value: {count: number}) => {
-        resolve(value.count);
-      }, err => {
-        reject(err);
-      });
-    });
+  public count(): Observable<number> {
+    return this.http.post<{ count: number }>(`${ArticlesService.API}/count`, {})
+        .pipe(
+            pluck("count")
+        );
   }
 
 }
