@@ -9,59 +9,53 @@ import {ProjectsFilter} from "../../shared/github/ProjectsFilter";
   styleUrls: ['./projects.component.css']
 })
 export class ProjectsComponent implements OnInit {
-  public repos: GitRepository[] = [];
-  public filters: ProjectsFilter = new ProjectsFilter({});
 
-  constructor(private githubService: GithubService) {}
+    filters: ProjectsFilter = new ProjectsFilter({});
 
-  ngOnInit() {
-      this.githubService.getMyRepos().then((res) => {
-          this.repos = res;
-      }).catch((err) => {
-          console.error(err);
-      });
-  }
+    constructor(private githubService: GithubService) {}
 
-  protected colorizedLang(lang: String) {
-    switch (lang.toLowerCase()) {
-        case "c":           return "black";
-        case "java":        return "chocolate";
-        case "python":      return "darkblue";
-        case "javascript":  return "gold";
-        case "shell":       return "yellowgreen";
-        default:            return "gray";
+    ngOnInit() {}
+
+    protected colorizedLang(lang: String) {
+        switch (lang.toLowerCase()) {
+            case "c":           return "black";
+            case "java":        return "chocolate";
+            case "python":      return "darkblue";
+            case "javascript":  return "gold";
+            case "shell":       return "yellowgreen";
+            default:            return "gray";
+        }
     }
-  }
 
-  protected addFilter(filter: string, byValue: string) {
-      switch (filter) {
-          case "lang": this.filters.lang = byValue; break;
-          case "pl": this.filters.pl = byValue; break;
-          default: break;
-      }
-  }
+    protected addFilter(filter: string, byValue: string) {
+        switch (filter) {
+            case "lang": this.filters.lang = byValue; break;
+            case "pl": this.filters.pl = byValue; break;
+            default: break;
+        }
+    }
 
-  protected isFilterPositive(repo: GitRepository) {
-      let isPositive: boolean = true;
+    protected isFilterPositive(repo: GitRepository) {
+        let isPositive: boolean = true;
 
-      if (isPositive && this.filters.pl) {
+        if (isPositive && this.filters.pl) {
           const filter: string = this.filters.pl.toLowerCase();
-          const license: string = repo.license ? repo.license.toLowerCase() : '';
+          const license: string = repo.license ? repo.license.name.toLowerCase() : '';
 
           isPositive = filter !== '' && license.startsWith(filter);
-      }
+        }
 
-      if (isPositive && this.filters.lang) {
+        if (isPositive && this.filters.lang) {
           const filter: string = this.filters.lang.toLowerCase();
           const lang: string = repo.language ? repo.language.toLowerCase() : '';
 
           isPositive = filter !== '' && lang.startsWith(filter);
-      }
+        }
 
-      return isPositive;
-  }
+        return isPositive;
+    }
 
-  protected resetFilters() {
-      this.filters = new ProjectsFilter({});
-  }
+    protected resetFilters() {
+        this.filters = new ProjectsFilter({});
+    }
 }

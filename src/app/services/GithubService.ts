@@ -1,57 +1,38 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {GitRepository} from '../shared/github/GitRepository';
+import {Observable, ReplaySubject} from "rxjs";
 
 @Injectable({
     providedIn: 'root'
 })
 export class GithubService {
 
-    private static repositories: GitRepository[] = [];
+    private repositoriesSubject = new ReplaySubject<GitRepository[]>(1);
+    public readonly repositories$ = this.repositoriesSubject.asObservable();
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) {
+        this.getMyRepos()
+            .subscribe((res) => {
+                const repositories = [];
 
-    public getMyRepos(): Promise<GitRepository[]> {
-        return new Promise<GitRepository[]>((resolve, reject) => {
-            if (GithubService.repositories.length === 0) {
-                this.http.get('https://api.github.com/users/Smarthard/repos').subscribe(
-                (res: object[]) => {
-                    res.forEach((element, index) =>  {
-                        const repo: GitRepository = new GitRepository(element);
-                        GithubService.repositories.push(repo);
+                res
+                    .filter((repository) => repository.fork)
+                    .forEach(async (fork) => repositories.push(await this.getRepoInfo(fork)));
 
-                        if (repo.fork) {
-                            this.getRepoInfo(repo.url).then(
-                                fork => {
-                                    GithubService.repositories[index] = fork;
-                                },
-                                err => {
-                                    console.error(err);
-                                });
-                        }
-                    });
+                res
+                    .filter((repository) => !repository.fork)
+                    .forEach((repository) => repositories.push(repository));
 
-                    resolve(GithubService.repositories);
-                },
-                (err) => {
-                    console.error(err);
-                    reject(err);
-                });
-            } else {
-                resolve(GithubService.repositories);
-            }
-        });
+                this.repositoriesSubject.next(repositories);
+            })
     }
 
-    private getRepoInfo(repo: string): Promise<GitRepository> {
-        return new Promise<GitRepository>((resolve, reject) => {
-            this.http.get(repo).subscribe(
-            res => {
-                resolve(new GitRepository(res));
-            },
-            err => {
-                reject(err);
-            });
-        });
+    public getMyRepos(): Observable<GitRepository[]> {
+        return this.http.get<GitRepository[]>('https://api.github.com/users/Smarthard/repos');
+    }
+
+    public getRepoInfo(repository: GitRepository): Promise<GitRepository> {
+        return this.http.get<GitRepository>(repository.url).toPromise();
     }
 }

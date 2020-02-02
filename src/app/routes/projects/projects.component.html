@@ -14,25 +14,39 @@
     </form>
 </mat-toolbar>
 
-<div *ngFor="let repo of repos">
+<div *ngFor="let repo of (githubService.repositories$ | async)">
     <mat-card *ngIf="isFilterPositive(repo)">
         <mat-card-header>
-            <mat-card-title><a href="{{ repo.svn_url }}" target="_blank">{{ repo.name }}</a></mat-card-title>
-            <span *ngIf="repo.fork">[ forked from <a href="{{repo.origin}}">{{ repo.origin_name }}</a> ]</span>
+            <mat-card-title>
+                <a href="{{ repo.svn_url }}" target="_blank">
+                    {{ repo.name }}
+                </a>
+            </mat-card-title>
+            <span *ngIf="repo.fork">
+                [ forked from <a href="{{ repo.parent.url }}">{{ repo.parent.name }}</a> ]
+            </span>
             <span class="fill-remaining-space"></span>
             <mat-chip-list>
-                <mat-chip *ngIf="repo.language != null" [ngClass]="colorizedLang(repo.language)" (click)="addFilter('lang', repo.language)">
+                <mat-chip *ngIf="repo.language != null"
+                          [ngClass]="colorizedLang(repo.language)"
+                          (click)="addFilter('lang', repo.language)">
                     {{ repo.language }}
                 </mat-chip>
-                <mat-chip *ngIf="repo.license != null" color="primary" selected (click)="addFilter('pl', repo.license)">
-                    {{ repo.license }}
+                <mat-chip *ngIf="repo.license != null"
+                          (click)="addFilter('pl', repo.license.name )"
+                          color="primary"
+                          selected>
+                    {{ repo.license.name }}
                 </mat-chip>
             </mat-chip-list>
         </mat-card-header>
         <mat-card-content>
-            <div *ngIf="repo.description != null; then description else noDescription"></div>
-            <ng-template #description>{{repo.description}}</ng-template>
-            <ng-template #noDescription>No description provided</ng-template>
+            <div *ngIf="repo.description != null; else noDescription">
+                {{ repo.description }}
+            </div>
+            <ng-template #noDescription>
+                No description provided
+            </ng-template>
         </mat-card-content>
     </mat-card>
 </div>
