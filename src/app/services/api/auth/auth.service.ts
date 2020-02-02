@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {User} from "../../../shared/api/User";
-import {environment} from "../../../../environments/environment";
+import {IUser, User} from "../../../shared/api/User";
+import {Observable} from "rxjs";
+import {map} from "rxjs/operators";
 import {CookieService} from "ngx-cookie-service";
 
 @Injectable({
@@ -9,46 +10,69 @@ import {CookieService} from "ngx-cookie-service";
 })
 export class AuthService {
 
-  // expires, path, secure, sameSite
-  static readonly cookieConfig: Array<any> = [null, '/', `.${environment.domain}`, environment.production, 'Strict'];
-
   private user: User = null;
-  private user_checked: boolean = false;
+  private userChecked: boolean = false;
 
-  constructor(private http: HttpClient, private cookie: CookieService) {}
+  constructor(
+      private http: HttpClient,
+      private cookie: CookieService
+  ) {}
 
   public isAuthorized(): boolean {
     return this.getUser() != null;
   }
 
   public getUser() {
-    if (!this.user && !this.user_checked) {
+    if (!this.user && !this.userChecked) {
         try {
-            this.user_checked = true;
+            this.userChecked = true;
             this.user = JSON.parse(this.cookie.get('user'));
         } catch (e) {
-            console.error("Could not find user's cookies");
+            console.warn("Could not find user's cookies");
+            this.whoami()
+                .subscribe((res) => {
+                        this.setUser(res);
+                    },
+                    () => {
+                        this.destroyUser();
+                    });
         }
-
-        this.http.get('/auth/me', { withCredentials: true })
-            .subscribe((res) => {
-                this.setUser(res);
-            },
-            err => {
-                this.destroyUser();
-            });
     }
 
     return this.user;
   }
 
+  public whoami(): Observable<User> {
+      return this.http.get<IUser>('/auth/me', { withCredentials: true })
+          .pipe(
+              map(user => new User(
+                      user.id,
+                      user.name,
+                      user.login,
+                      user.email,
+                      user.banned,
+                      user.scopes,
+                      new Date(user.createdAt)
+                  )
+              )
+          );
+  }
+
   public login(login: string, password: string) {
-    this.http.post('/auth/login',
-        { login: login,  password: password },
-        { withCredentials: true })
-        .subscribe((res) => {
+    this.http.post<IUser>('/auth/login',{ login,  password })
+        .subscribe((user) => {
             try {
-                this.setUser(res);
+                this.setUser(
+                    new User(
+                        user.id,
+                        user.name,
+                        user.login,
+                        user.email,
+                        user.banned,
+                        user.scopes,
+                        new Date(user.createdAt)
+                    )
+                );
             } catch (e) {
                 this.destroyUser();
                 console.error('Failed to log in');
@@ -60,8 +84,8 @@ export class AuthService {
   }
 
   public logout() {
-    this.http.get('/auth/logout', { withCredentials: true })
-        .subscribe((value: any) => {
+    this.http.get<{ message: string }>('/auth/logout', { withCredentials: true })
+        .subscribe((value) => {
             console.log(value.message);
             this.destroyUser();
         },
@@ -70,9 +94,13 @@ export class AuthService {
         });
   }
 
-  private setUser(json) {
-      this.user = new User(json);
-      this.cookie.set('user', JSON.stringify(json), ...AuthService.cookieConfig);
+  private setUser(user: User) {
+      try {
+          this.user = user;
+          this.cookie.set('user', JSON.stringify(user));
+      } catch (e) {
+          console.error(e);
+      }
   }
 
   private destroyUser() {

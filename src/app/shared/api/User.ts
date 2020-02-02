@@ -1,17 +1,21 @@
-export class User {
-    public name: string;
-    public login: string;
-    public email: string;
-    public banned: boolean;
-    public role: string;
-    public registered: Date;
+export interface IUser {
+    readonly id: number;
+    readonly name: string;
+    readonly login: string;
+    readonly email: string;
+    readonly banned: boolean;
+    readonly scopes: string[];
+    readonly createdAt: string;
+}
 
-    constructor(raw) {
-        this.name = raw.name;
-        this.login = raw.login;
-        this.email = raw.email;
-        this.banned = raw.banned;
-        this.role = raw.role;
-        this.registered = raw.createdAt;
-    }
+export class User {
+    constructor(
+        public id: number,
+        public name: string,
+        public login: string,
+        public email: string,
+        public banned: boolean,
+        public roles: string[],
+        public registered: Date
+    ) {}
 }
