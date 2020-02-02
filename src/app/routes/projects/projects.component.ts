@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {GitRepository} from "../../shared/github/GitRepository";
 import {GithubService} from "../../services/GithubService";
-import {ProjectsFilter} from "../../shared/github/ProjectsFilter";
+import {GitRepository} from "../../shared/github/GitRepository";
 
 @Component({
   selector: 'app-projects',
@@ -10,7 +9,8 @@ import {ProjectsFilter} from "../../shared/github/ProjectsFilter";
 })
 export class ProjectsComponent implements OnInit {
 
-    filters: ProjectsFilter = new ProjectsFilter({});
+    langFilters = new Set<string>();
+    licenseFilters = new Set<string>();
 
     constructor(private githubService: GithubService) {}
 
@@ -18,45 +18,46 @@ export class ProjectsComponent implements OnInit {
 
     protected colorizedLang(lang: String) {
         switch (lang.toLowerCase()) {
-            case "c":           return "black";
-            case "java":        return "chocolate";
-            case "python":      return "darkblue";
-            case "javascript":  return "gold";
-            case "typescript":  return "steelblue";
-            case "shell":       return "yellowgreen";
-            default:            return "gray";
+            case 'c':           return 'black';
+            case 'java':        return 'chocolate';
+            case 'python':      return 'darkblue';
+            case 'javascript':  return 'gold';
+            case 'typescript':  return 'steelblue';
+            case 'shell':       return 'yellowgreen';
+            default:            return 'gray';
         }
     }
 
-    protected addFilter(filter: string, byValue: string) {
+    addFilter(filter: 'lang' | 'license', value: string) {
         switch (filter) {
-            case "lang": this.filters.lang = byValue; break;
-            case "pl": this.filters.pl = byValue; break;
+            case 'lang':    this.langFilters.add(value);      break;
+            case 'license': this.licenseFilters.add(value);   break;
             default: break;
         }
     }
 
-    protected isFilterPositive(repo: GitRepository) {
-        let isPositive: boolean = true;
-
-        if (isPositive && this.filters.pl) {
-          const filter: string = this.filters.pl.toLowerCase();
-          const license: string = repo.license ? repo.license.name.toLowerCase() : '';
-
-          isPositive = filter !== '' && license.startsWith(filter);
+    removeFilter(filter: 'lang' | 'license', value: string) {
+        switch (filter) {
+            case 'lang':    this.langFilters.delete(value);       break;
+            case 'license': this.licenseFilters.delete(value);    break;
+            default: break;
         }
-
-        if (isPositive && this.filters.lang) {
-          const filter: string = this.filters.lang.toLowerCase();
-          const lang: string = repo.language ? repo.language.toLowerCase() : '';
-
-          isPositive = filter !== '' && lang.startsWith(filter);
-        }
-
-        return isPositive;
     }
 
-    protected resetFilters() {
-        this.filters = new ProjectsFilter({});
+    applyFilters(repository: GitRepository) {
+        const isLangInFilter = this.langFilters.has(repository.language);
+        const isLicenseInFilter = repository.license && this.licenseFilters.has(repository.license.name);
+
+        return (this.langFilters.size === 0     || isLangInFilter) &&
+               (this.licenseFilters.size === 0  || isLicenseInFilter);
+    }
+
+    isFiltersEmpty() {
+        return this.langFilters.size === 0 && this.licenseFilters.size === 0;
+    }
+
+    resetFilters() {
+        this.langFilters = new Set<string>();
+        this.licenseFilters = new Set<string>();
     }
 }

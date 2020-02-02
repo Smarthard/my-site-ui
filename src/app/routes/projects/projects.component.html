@@ -1,21 +1,23 @@
-<mat-toolbar id="filters_controls" *ngIf="!filters.isEmpty()">
-    <form>
-        <label>Фильтры
-            <mat-form-field>
-                <input matInput [(ngModel)]="filters.lang" [ngModelOptions]="{standalone: true}">
-            </mat-form-field>
-
-            <mat-form-field>
-                <input matInput [(ngModel)]="filters.pl" [ngModelOptions]="{standalone: true}">
-            </mat-form-field>
-
-            <button mat-button (click)="resetFilters()">Сбросить</button>
-        </label>
-    </form>
+<mat-toolbar id="filters_controls" *ngIf="!isFiltersEmpty()">
+    <mat-chip *ngFor="let lang of langFilters"
+              (click)="removeFilter('lang', lang)"
+              [ngClass]="colorizedLang(lang)">
+        {{ lang }}
+    </mat-chip>
+    <mat-chip *ngFor="let license of licenseFilters"
+              (click)="removeFilter('license', license)"
+              color="primary" selected>
+        {{ license }}
+    </mat-chip>
+    <button id="reset-filters-button"
+            (click)="resetFilters()"
+            mat-raised-button>
+        сбросить
+    </button>
 </mat-toolbar>
 
 <div *ngFor="let repo of (githubService.repositories$ | async)">
-    <mat-card *ngIf="isFilterPositive(repo)">
+    <mat-card *ngIf="applyFilters(repo)">
         <mat-card-header>
             <mat-card-title>
                 <a href="{{ repo.svn_url }}" target="_blank">
@@ -33,7 +35,7 @@
                     {{ repo.language }}
                 </mat-chip>
                 <mat-chip *ngIf="repo.license != null"
-                          (click)="addFilter('pl', repo.license.name )"
+                          (click)="addFilter('license', repo.license.name )"
                           color="primary"
                           selected>
                     {{ repo.license.name }}

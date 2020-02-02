@@ -20,12 +20,21 @@ mat-card-content *:nth-child(2) {
     margin-left: auto;
 }
 
-mat-card-content, .icon-with-number {
+mat-toolbar, mat-card-content, .icon-with-number {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: flex-end;
     align-content: flex-end;
+}
+
+mat-toolbar * {
+    margin: 0 4px;
+    align-self: center;
+}
+
+#reset-filters-button {
+    margin-left: auto;
 }
 
 .git-icons {
