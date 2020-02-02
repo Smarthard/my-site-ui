@@ -1,19 +1,5 @@
-mat-card {
-    margin: 1%;
-}
-
 mat-chip {
     color: white !important;
-}
-
-span {
-    margin: 5px;
-}
-
-mat-form-field {
-    width: 98%;
-    padding: 5px;
-    font-size: 0.7vmax;
 }
 
 mat-card-content *:nth-child(2) {
@@ -84,4 +70,36 @@ mat-toolbar * {
 
 #filters_controls {
     text-align: right;
+}
+
+@media (min-width: 1025px) {
+    mat-card {
+        margin: 1%;
+    }
+
+    span {
+        margin: 5px;
+    }
+}
+
+@media (max-width: 1024px) {
+    mat-card {
+        margin: 5px;
+    }
+
+    mat-card-title * {
+        font-size: small;
+    }
+
+    .fork-info {
+        font-size: xx-small;
+    }
+
+    mat-card-content {
+        font-size: small;
+    }
+
+    mat-chip {
+        font-size: small;
+    }
 }

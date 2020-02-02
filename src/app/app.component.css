@@ -1,3 +1,5 @@
-#content {
-    padding: 0 15% 0 15%;
+@media (min-width: 1025px) {
+    #content {
+        padding: 0 15% 0 15%;
+    }
 }

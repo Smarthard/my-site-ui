@@ -46,7 +46,7 @@ export class ProjectsComponent implements OnInit {
 
     applyFilters(repository: GitRepository) {
         const isLangInFilter = this.langFilters.has(repository.language);
-        const isLicenseInFilter = repository.license && this.licenseFilters.has(repository.license.name);
+        const isLicenseInFilter = repository.license && this.licenseFilters.has(repository.license.key);
 
         return (this.langFilters.size === 0     || isLangInFilter) &&
                (this.licenseFilters.size === 0  || isLicenseInFilter);

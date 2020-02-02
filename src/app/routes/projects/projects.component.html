@@ -7,7 +7,7 @@
     <mat-chip *ngFor="let license of licenseFilters"
               (click)="removeFilter('license', license)"
               color="primary" selected>
-        {{ license }}
+        {{ license | uppercase }}
     </mat-chip>
     <button id="reset-filters-button"
             (click)="resetFilters()"
@@ -24,8 +24,9 @@
                     {{ repo.name }}
                 </a>
             </mat-card-title>
-            <span *ngIf="repo.fork">
-                [ forked from <a href="{{ repo.parent.url }}">{{ repo.parent.full_name }}</a> ]
+            <span *ngIf="repo.fork"
+                  class="fork-info">
+                from <a href="{{ repo.parent.url }}">{{ repo.parent.full_name }}</a>
             </span>
             <span class="fill-remaining-space"></span>
             <mat-chip-list>
@@ -35,10 +36,10 @@
                     {{ repo.language }}
                 </mat-chip>
                 <mat-chip *ngIf="repo.license != null"
-                          (click)="addFilter('license', repo.license.name )"
+                          (click)="addFilter('license', repo.license.key )"
                           color="primary"
                           selected>
-                    {{ repo.license.name }}
+                    {{ repo.license.key | uppercase }}
                 </mat-chip>
             </mat-chip-list>
         </mat-card-header>
