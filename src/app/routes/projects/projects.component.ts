@@ -22,6 +22,7 @@ export class ProjectsComponent implements OnInit {
             case "java":        return "chocolate";
             case "python":      return "darkblue";
             case "javascript":  return "gold";
+            case "typescript":  return "steelblue";
             case "shell":       return "yellowgreen";
             default:            return "gray";
         }
