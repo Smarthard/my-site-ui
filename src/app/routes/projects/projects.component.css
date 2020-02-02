@@ -16,6 +16,34 @@ mat-form-field {
     font-size: 0.7vmax;
 }
 
+mat-card-content *:nth-child(2) {
+    margin-left: auto;
+}
+
+mat-card-content, .icon-with-number {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-end;
+    align-content: flex-end;
+}
+
+.git-icons {
+    height: 16px;
+    margin: 0 3px;
+}
+
+.icon-with-number {
+    font-size: small;
+    padding: 0 5px;
+    cursor: pointer;
+    color: dimgray;
+}
+
+.icon-with-number:hover {
+    color: black;
+}
+
 .black {
     background: #444;
     font-weight: 500;

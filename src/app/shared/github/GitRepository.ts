@@ -4,13 +4,12 @@ export class GitRepository {
         public url: string,
         public svn_url: URL | string,
         public name: string,
-        public isPrivate: boolean,
+        public full_name: string,
         public description: string,
         public createdDate: Date | string,
         public updatedDate: Date | string,
         public language: string,
         public fork: boolean,
-        public forksCount: number,
         public openIssuesCount: number,
         public license: {
             key: string,
@@ -19,7 +18,9 @@ export class GitRepository {
             url: URL | string,
             node_id: string
         },
-        public watchers: number,
+        public forks_count: number = 0,
+        public stargazers_count: number = 0,
+        public watchers_count: number = 0,
         public parent?: GitRepository,
     ) {}
 }
