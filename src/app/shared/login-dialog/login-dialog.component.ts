@@ -1,13 +1,14 @@
 import {Component, OnInit} from '@angular/core';
-import {MatDialogRef} from "@angular/material";
-import {AuthService} from "../../services/api/auth/auth.service";
+import {MatDialogRef} from '@angular/material/dialog';
+
+import {AuthService} from '../../services/api/auth/auth.service';
 
 @Component({
   selector: 'app-login-dialog',
   templateUrl: './login-dialog.component.html',
   styleUrls: ['./login-dialog.component.css']
 })
-export class LoginDialogComponent implements OnInit{
+export class LoginDialogComponent implements OnInit {
 
   username: string;
   password: string;

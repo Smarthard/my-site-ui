@@ -1,33 +1,33 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {RouterModule} from "@angular/router";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {
-    MatButtonModule,
-    MatChipsModule, MatDialogModule,
-    MatDividerModule,
-    MatGridListModule,
-    MatIconModule,
-    MatInputModule, MatMenuModule,
-    MatPaginatorModule,
-    MatProgressBarModule,
-    MatSelectModule,
-    MatToolbarModule,
-} from "@angular/material";
-import {MatCardModule} from "@angular/material/card";
 
-import {routes} from "./routes/router";
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HomeComponent} from './routes/home/home.component';
 import {NotFoundComponent} from './routes/notfound/notfound.component';
 import {ProjectsComponent} from './routes/projects/projects.component';
-import {GithubService} from "./services/GithubService";
-import {HttpClientModule, HttpClientXsrfModule} from "@angular/common/http";
-import {FormsModule} from "@angular/forms";
-import {AuthService} from "./services/api/auth/auth.service";
-import {CookieService} from "ngx-cookie-service";
 import {LoginDialogComponent} from './shared/login-dialog/login-dialog.component';
+import {RouterModule} from '@angular/router';
+import {routes} from './routes/router';
+import {MatButtonModule} from '@angular/material/button';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatCardModule} from '@angular/material/card';
+import {MatChipsModule} from '@angular/material/chips';
+import {HttpClientModule, HttpClientXsrfModule} from '@angular/common/http';
+import {GithubService} from './services/GithubService';
+import {CookieService} from 'ngx-cookie-service';
+import {AuthService} from './services/api/auth/auth.service';
+import {MatMenuModule} from '@angular/material/menu';
+import {FormsModule} from '@angular/forms';
+import {MatSelectModule} from '@angular/material/select';
+import {MatInputModule} from '@angular/material/input';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatIconModule} from '@angular/material/icon';
+import {MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({
     declarations: [

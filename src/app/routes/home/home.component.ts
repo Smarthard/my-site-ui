@@ -1,8 +1,9 @@
-import {Component, EventEmitter, OnInit} from "@angular/core";
-import {ArticlesService} from "../../services/api/articles/articles.service";
-import {PageEvent} from "@angular/material";
-import {HttpParams} from "@angular/common/http";
-import {publishReplay, refCount, switchMap} from "rxjs/operators";
+import {Component, EventEmitter, OnInit} from '@angular/core';
+import {PageEvent} from '@angular/material/paginator';
+import {HttpParams} from '@angular/common/http';
+import {publishReplay, refCount, switchMap} from 'rxjs/operators';
+
+import {ArticlesService} from '../../services/api/articles/articles.service';
 
 @Component({
   selector: 'app-home',
@@ -35,7 +36,7 @@ export class HomeComponent implements OnInit {
     this.articlesCount$
         .subscribe(count =>
             this.paginationEvents.emit({ pageIndex: 1, pageSize: this.PAGE_SIZE, length: count })
-        )
+        );
   }
 
 }

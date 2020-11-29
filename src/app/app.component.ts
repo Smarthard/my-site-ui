@@ -1,8 +1,9 @@
 import {Component} from '@angular/core';
-import {Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from "@angular/router";
-import {AuthService} from "./services/api/auth/auth.service";
-import {MatDialog} from "@angular/material";
-import {LoginDialogComponent} from "./shared/login-dialog/login-dialog.component";
+import {Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from '@angular/router';
+import {MatDialog} from '@angular/material/dialog';
+
+import {AuthService} from './services/api/auth/auth.service';
+import {LoginDialogComponent} from './shared/login-dialog/login-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,7 @@ export class AppComponent {
   constructor(
       private router: Router,
       private auth: AuthService,
-      private dialog: MatDialog
+      private dialog: MatDialog,
   ) {
     this.router.events.subscribe((event: Event) => {
       switch (true) {
@@ -34,7 +35,7 @@ export class AppComponent {
 
         default: break;
       }
-    })
+    });
   }
 
   public openLoginDialog() {
@@ -43,6 +44,6 @@ export class AppComponent {
     loginDialogRef.afterClosed()
         .subscribe(result => {
           console.log(result);
-        })
+        });
   }
 }
