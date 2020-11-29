@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from "@angular/common/http";
-import {Article, IArticle} from "../../../shared/api/Article";
-import {Observable} from "rxjs";
-import {map, pluck} from "rxjs/operators";
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {map, pluck} from 'rxjs/operators';
+import {Article, IArticle} from '../../../shared/api/Article';
+import {environment} from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -46,7 +47,7 @@ export class ArticlesService {
   public count(): Observable<number> {
     return this.http.post<{ count: number }>(`${ArticlesService.API}/count`, {})
         .pipe(
-            pluck("count")
+            pluck('count')
         );
   }
 
