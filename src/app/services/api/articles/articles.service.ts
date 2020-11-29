@@ -9,7 +9,7 @@ import {map, pluck} from "rxjs/operators";
 })
 export class ArticlesService {
 
-  static readonly API = '/api/articles';
+  static readonly API: string = environment.apiSecureUrl + 'api/articles';
 
   private _mapArticle = map((article: IArticle) => new Article(
       article.id,

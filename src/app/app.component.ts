@@ -16,8 +16,8 @@ export class AppComponent {
 
   constructor(
       private router: Router,
-      private auth: AuthService,
-      private dialog: MatDialog,
+      public auth: AuthService,
+      private dialog: MatDialog
   ) {
     this.router.events.subscribe((event: Event) => {
       switch (true) {

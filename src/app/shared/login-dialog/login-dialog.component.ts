@@ -9,9 +9,8 @@ import {AuthService} from '../../services/api/auth/auth.service';
   styleUrls: ['./login-dialog.component.css']
 })
 export class LoginDialogComponent implements OnInit {
-
-  username: string;
-  password: string;
+  public username: string;
+  public password: string;
 
   constructor(
       private auth: AuthService,
