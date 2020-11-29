@@ -28,6 +28,8 @@ import {MatInputModule} from '@angular/material/input';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDialogModule} from '@angular/material/dialog';
+import { RequestsComponent } from './routes/requests/requests.component';
+import {NgxJsonViewModule} from 'ng-json-view';
 
 @NgModule({
     declarations: [
@@ -35,7 +37,8 @@ import {MatDialogModule} from '@angular/material/dialog';
         HomeComponent,
         NotFoundComponent,
         ProjectsComponent,
-        LoginDialogComponent
+        LoginDialogComponent,
+        RequestsComponent
     ],
     imports: [
         BrowserModule,
@@ -57,7 +60,8 @@ import {MatDialogModule} from '@angular/material/dialog';
         MatPaginatorModule,
         MatIconModule,
         MatDialogModule,
-        MatMenuModule
+        MatMenuModule,
+        NgxJsonViewModule,
     ],
     providers: [GithubService, AuthService, CookieService],
     bootstrap: [AppComponent],

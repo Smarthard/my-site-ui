@@ -1,0 +1,53 @@
+mat-card {
+   margin: 10px 0;
+}
+
+mat-card-title {
+    display: flex;
+}
+
+mat-card-footer {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.new-data,
+.old-data,
+.comment-section,
+.feedback {
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.new-data {
+    background-color: #0701;
+}
+
+.old-data {
+    background-color: #A001;
+}
+
+.feedback {
+    background-color: #00A1;
+}
+
+.feedback p {
+    margin: 0 14px;
+}
+
+.unreviewed {
+    color: orange;
+}
+
+.rejected {
+    color: red;
+}
+
+.approved {
+    color: green;
+}
+
+button:disabled {
+    background-color: #80808010;
+}
