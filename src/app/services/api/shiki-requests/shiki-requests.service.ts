@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 import {IRequest, Request} from '../../../shared/api/Request';
+import {environment} from '../../../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -40,35 +41,35 @@ export class ShikiRequestsService {
             params = params.set('offset', `${offset}`);
         }
 
-        return this.http.get<IRequest[]>('https://smarthard.net/api/requests', {params})
+        return this.http.get<IRequest[]>(`${environment.apiSecureUrl}/api/requests`, {params})
             .pipe(
                 map((requests) => requests.map((request) => ShikiRequestsService._createRequest(request)))
             );
     }
 
     public getRequestById(id: number): Observable<Request> {
-        return this.http.get<IRequest>(`https://smarthard.net/api/requests/${id}`)
+        return this.http.get<IRequest>(`${environment.apiSecureUrl}/api/requests/${id}`)
             .pipe(
                 map((request) => ShikiRequestsService._createRequest(request))
             );
     }
 
     public approve(request: Request): Observable<Request> {
-        return this.http.post<IRequest>(`https://smarthard.net/api/requests/${request.id}/approve`, {})
+        return this.http.post<IRequest>(`${environment.apiSecureUrl}/api/requests/${request.id}/approve`, {})
             .pipe(
                 map((approvedRequest) => ShikiRequestsService._createRequest(approvedRequest))
             );
     }
 
     public reject(request: Request): Observable<Request> {
-        return this.http.post<IRequest>(`https://smarthard.net/api/requests/${request.id}/reject`, {})
+        return this.http.post<IRequest>(`${environment.apiSecureUrl}/api/requests/${request.id}/reject`, {})
             .pipe(
                 map((approvedRequest) => ShikiRequestsService._createRequest(approvedRequest))
             );
     }
 
     public revert(request: Request): Observable<Request> {
-        return this.http.post<IRequest>(`https://smarthard.net/api/requests/${request.id}/revert`, {})
+        return this.http.post<IRequest>(`${environment.apiSecureUrl}/api/requests/${request.id}/revert`, {})
             .pipe(
                 map((approvedRequest) => ShikiRequestsService._createRequest(approvedRequest))
             );
