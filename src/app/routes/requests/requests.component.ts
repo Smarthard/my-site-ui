@@ -20,33 +20,33 @@ export class RequestsComponent implements OnInit {
         private requestsService: ShikiRequestsService
     ) {}
 
-    private static _sortByUnreviewed(a: Request, b: Request): number {
-        if (!a?.reviewed) {
-            return -1;
-        }
+    private static _sortByCreatedDate(a: Request, b: Request): number {
+        return b.createdAt.getTime() - a.createdAt.getTime();
+    }
 
-        if (!b?.reviewed) {
-            return 1;
-        }
-
-        if (a?.reviewed && b?.reviewed) {
-            return b.reviewed.getDate() - a.reviewed.getDate();
-        }
+    private static _sortByReviewDate(a: Request, b: Request): number {
+        return b.reviewed.getTime() - a.reviewed.getTime();
     }
 
     private _refreshRequests(): void {
         this.allRequests$ = this.requestsService.getRequests().pipe(
-            map((requests) => [...requests.sort(RequestsComponent._sortByUnreviewed)]),
+            map((requests) => [...requests ]),
             shareReplay(1),
         );
 
         this.reviewedRequests$ = this.allRequests$.pipe(
-            map((requests) => [...requests.filter((r) => r.reviewed)]),
+            map((requests) => [ ...requests
+                .filter((r) => r.reviewed)
+                .sort(RequestsComponent._sortByReviewDate)
+            ]),
             tap(console.log)
         );
 
         this.unreviewedRequests$ = this.allRequests$.pipe(
-            map((requests) => [...requests.filter((r) => !r.reviewed)]),
+            map((requests) => [ ...requests
+                .filter((r) => !r.reviewed)
+                .sort(RequestsComponent._sortByCreatedDate)
+            ]),
         );
     }
 
