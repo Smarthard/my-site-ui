@@ -2,10 +2,29 @@
     <h1>Smarthard</h1>
 
     <span class="fill-remaining-space"></span>
-    <button mat-button routerLink="/">Новости</button>
-    <button mat-button routerLink="/projects">Проекты</button>
-    <button mat-button *ngIf="!auth.isAuthorized()" (click)="openLoginDialog()">Войти</button>
-    <button mat-icon-button *ngIf="auth.isAuthorized()" [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
+    <button mat-button
+            routerLink="/">
+        Новости
+    </button>
+    <button mat-button
+            routerLink="/projects">
+        Проекты
+    </button>
+    <button *ngIf="auth.isAuthorized()"
+            mat-button
+            routerLink="/requests">
+        Запросы
+    </button>
+    <button *ngIf="!auth.isAuthorized()"
+            (click)="openLoginDialog()"
+            mat-button>
+        Войти
+    </button>
+    <button *ngIf="auth.isAuthorized()"
+            [matMenuTriggerFor]="menu"
+            mat-icon-button>
+        <mat-icon>more_vert</mat-icon>
+    </button>
     <mat-menu #menu="matMenu">
         <ng-template matMenuContent>
             <button mat-menu-item (click)="auth.logout()">Выйти</button>
