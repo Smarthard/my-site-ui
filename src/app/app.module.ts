@@ -30,6 +30,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatDialogModule} from '@angular/material/dialog';
 import { RequestsComponent } from './routes/requests/requests.component';
 import {NgxJsonViewModule} from 'ng-json-view';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
     declarations: [
@@ -48,6 +49,7 @@ import {NgxJsonViewModule} from 'ng-json-view';
         MatToolbarModule,
         MatButtonModule,
         MatProgressBarModule,
+        MatProgressSpinnerModule,
         MatCardModule,
         MatDividerModule,
         MatGridListModule,

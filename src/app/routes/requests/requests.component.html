@@ -1,42 +1,77 @@
-<div *ngFor="let request of (requests$ | async)">
+<div class="flex">
+    <ng-container *ngIf="(allRequests$ | async)?.length > 0; else noRequests">
+        <div *ngIf="(unreviewedRequests$ | async)?.length > 0; else emptyList"
+             class="card-container">
+            <h1>Unreviewed</h1>
+
+            <div *ngFor="let requestToReview of (unreviewedRequests$ | async); trackBy: trackById">
+                <ng-container [ngTemplateOutlet]="requestCardTemplate"
+                              [ngTemplateOutletContext]="{ item: requestToReview }"></ng-container>
+            </div>
+        </div>
+
+        <div *ngIf="(reviewedRequests$ | async)?.length > 0"
+             class="card-container">
+            <h1>Reviewed</h1>
+
+            <div *ngFor="let reviewedRequest of (reviewedRequests$ | async); trackBy: trackById">
+                <ng-container [ngTemplateOutlet]="requestCardTemplate"
+                              [ngTemplateOutletContext]="{ item: reviewedRequest }"></ng-container>
+            </div>
+        </div>
+
+        <ng-template #emptyList>
+            <div>
+                <span>Nothing</span>
+            </div>
+        </ng-template>
+    </ng-container>
+
+    <ng-template #noRequests>
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </ng-template>
+</div>
+
+<ng-template #requestCardTemplate
+             let-item="item">
     <mat-card>
         <mat-card-header>
             <mat-card-title>
-                <mat-icon *ngIf="!request?.reviewed"
+                <mat-icon *ngIf="!item?.reviewed"
                           class="unreviewed">
                     priority_high
                 </mat-icon>
-                <mat-icon *ngIf="isRejected(request)"
+                <mat-icon *ngIf="isRejected(item)"
                           class="rejected">
                     clear
                 </mat-icon>
-                <mat-icon *ngIf="isApproved(request)"
+                <mat-icon *ngIf="isApproved(item)"
                           class="approved">
                     done
                 </mat-icon>
 
-                <span>{{ getRequestType(request) | titlecase }} request
-                    <a [href]="'https://smarthard.net/api/requests/' + request?.id">#{{ request?.id }}</a>
+                <span>{{ getRequestType(item) | titlecase }} request
+                    <a [href]="'https://smarthard.net/api/requests/' + item?.id">#{{ item?.id }}</a>
                     by
-                    <a [href]="request?.requester">{{ getNickname(request?.requester) }}</a>
+                    <a [href]="item?.requester">{{ getNickname(item?.requester) }}</a>
                 </span>
                 <span class="fill-remaining-space"></span>
             </mat-card-title>
             <mat-card-subtitle>
                 <div>
-                    Target ID: {{ request?.targetId }}
+                    Target ID: {{ item?.targetId }}
                 </div>
 
-                <div [title]="request?.createdAt">
-                    Created at {{ request?.createdAt | date:'dd.MM.y HH:mm' }}
+                <div [title]="item?.createdAt">
+                    Created at {{ item?.createdAt | date:'dd.MM.y HH:mm' }}
                 </div>
 
-                <div *ngIf="request?.reviewed"
-                     [title]="request?.reviewed">
-                    Reviewed at {{ request?.reviewed | date:'dd.MM.y HH:mm' }}
+                <div *ngIf="item?.reviewed"
+                     [title]="item?.reviewed">
+                    Reviewed at {{ item?.reviewed | date:'dd.MM.y HH:mm' }}
                 </div>
 
-                <div *ngIf="!request?.reviewed">
+                <div *ngIf="!item?.reviewed">
                     Not reviewed yet
                 </div>
             </mat-card-subtitle>
@@ -45,54 +80,48 @@
 
             <div class="comment-section">
                 <b>Comment:</b>
-                <p><span>{{ request?.comment }}</span></p>
+                <p><span>{{ item?.comment }}</span></p>
             </div>
 
-            <div class="new-data">
+            <div *ngIf="!isEmpty(item)" class="new-data">
                 <b>New:</b>
 
-                <ng-container *ngIf="!isEmpty(request); else emptyRequestLable">
-                    <ngx-json-view [data]="request?.request" levelOpen="1"></ngx-json-view>
-                </ng-container>
-
-                <ng-template #emptyRequestLable>
-                    <div style="margin-left: 14px">None</div>
-                </ng-template>
+                <ngx-json-view [data]="item?.request" levelOpen="1"></ngx-json-view>
             </div>
 
-            <div class="old-data">
+            <div class="old-data" *ngIf="item?.old">
                 <b>Old:</b>
-                <ngx-json-view [data]="request?.old" levelOpen="1"></ngx-json-view>
+                <ngx-json-view [data]="item?.old" levelOpen="1"></ngx-json-view>
             </div>
 
-            <div *ngIf="hasFeedback(request)"
+            <div *ngIf="hasFeedback(item)"
                  class="feedback">
                 <b>Feedback:</b>
-                <p>{{ request?.feedback }}</p>
+                <p>{{ item?.feedback }}</p>
             </div>
         </mat-card-content>
 
         <mat-card-footer>
             <button class="approved"
-                    [disabled]="isReviewed(request)"
-                    (click)="approve(request)"
+                    [disabled]="isReviewed(item)"
+                    (click)="approve(item)"
                     mat-button>
                 <mat-icon>done</mat-icon>
             </button>
 
             <button class="rejected"
-                    (click)="reject(request)"
-                    [disabled]="isReviewed(request)"
+                    (click)="reject(item)"
+                    [disabled]="isReviewed(item)"
                     mat-button>
                 <mat-icon>clear</mat-icon>
             </button>
 
             <button class="unreviewed"
-                    (click)="revert(request)"
-                    [disabled]="!isReviewed(request)"
+                    (click)="revert(item)"
+                    [disabled]="!isReviewed(item)"
                     mat-button>
                 <mat-icon>restore</mat-icon>
             </button>
         </mat-card-footer>
     </mat-card>
-</div>
+</ng-template>

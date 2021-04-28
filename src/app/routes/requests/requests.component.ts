@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Request} from '../../shared/api/Request';
 import {ShikiRequestsService} from '../../services/api/shiki-requests/shiki-requests.service';
 import {Observable, of} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {map, shareReplay, tap} from 'rxjs/operators';
 
 @Component({
     selector: 'app-requests',
@@ -10,7 +10,9 @@ import {map} from 'rxjs/operators';
     styleUrls: ['./requests.component.css']
 })
 export class RequestsComponent implements OnInit {
-    requests$: Observable<Request[]>;
+    allRequests$: Observable<Request[]>;
+    reviewedRequests$: Observable<Request[]>;
+    unreviewedRequests$: Observable<Request[]>;
 
     constructor(
         private requestsService: ShikiRequestsService
@@ -31,8 +33,18 @@ export class RequestsComponent implements OnInit {
     }
 
     private _refreshRequests(): void {
-        this.requests$ = this.requestsService.getRequests().pipe(
-            map((requests) => requests.sort(RequestsComponent._sortByUnreviewed))
+        this.allRequests$ = this.requestsService.getRequests().pipe(
+            map((requests) => [...requests.sort(RequestsComponent._sortByUnreviewed)]),
+            shareReplay(1),
+        );
+
+        this.reviewedRequests$ = this.allRequests$.pipe(
+            map((requests) => [...requests.filter((r) => r.reviewed)]),
+            tap(console.log)
+        );
+
+        this.unreviewedRequests$ = this.allRequests$.pipe(
+            map((requests) => [...requests.filter((r) => !r.reviewed)]),
         );
     }
 
@@ -67,7 +79,7 @@ export class RequestsComponent implements OnInit {
     }
 
     isEmpty(request: Request): boolean {
-        return Object.keys(request.request)?.length === 0;
+        return Object.keys(request?.request || {})?.length === 0;
     }
 
     isRejected(request: Request): boolean {
@@ -113,5 +125,9 @@ export class RequestsComponent implements OnInit {
                     return of(null);
                 }
             );
+    }
+
+    trackById(index, item) {
+        return item.id;
     }
 }

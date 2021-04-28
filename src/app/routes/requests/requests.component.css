@@ -2,8 +2,36 @@ mat-card {
    margin: 10px 0;
 }
 
-mat-card-title {
+h1 {
+    font-size: x-large;
+    font-weight: normal;
+    text-align: center;
+}
+
+mat-card-title,
+.flex {
     display: flex;
+}
+
+.flex {
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+}
+
+@media (max-width: 1024px) {
+    .flex {
+        flex-direction: column;
+    }
+}
+
+.card-container {
+    margin: 0 5px;
+}
+
+mat-progress-spinner {
+    position: fixed;
+    top: 45%;
 }
 
 mat-card-footer {
