@@ -50,7 +50,7 @@ export class Request {
         this.old = old;
         this.approved = approved;
         this.reviewerId = reviewerId;
-        this.reviewed = !reviewed ? null : new Date(!reviewed ? null : createdAt);
+        this.reviewed = !reviewed ? null : new Date(!reviewed ? null : reviewed);
         this.feedback = feedback;
         this.createdAt = new Date(!createdAt ? null : createdAt);
     }
