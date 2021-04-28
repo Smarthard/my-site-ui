@@ -55,14 +55,18 @@ export class ShikiRequestsService {
     }
 
     public approve(request: Request): Observable<Request> {
-        return this.http.post<IRequest>(`${environment.apiSecureUrl}/api/requests/${request.id}/approve`, {})
+        const feedback = request.feedback;
+
+        return this.http.post<IRequest>(`${environment.apiSecureUrl}/api/requests/${request.id}/approve`, { feedback })
             .pipe(
                 map((approvedRequest) => ShikiRequestsService._createRequest(approvedRequest))
             );
     }
 
     public reject(request: Request): Observable<Request> {
-        return this.http.post<IRequest>(`${environment.apiSecureUrl}/api/requests/${request.id}/reject`, {})
+        const feedback = request.feedback;
+
+        return this.http.post<IRequest>(`${environment.apiSecureUrl}/api/requests/${request.id}/reject`, { feedback })
             .pipe(
                 map((approvedRequest) => ShikiRequestsService._createRequest(approvedRequest))
             );

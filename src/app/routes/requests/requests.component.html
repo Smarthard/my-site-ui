@@ -94,10 +94,15 @@
                 <ngx-json-view [data]="item?.old" levelOpen="1"></ngx-json-view>
             </div>
 
-            <div *ngIf="hasFeedback(item)"
+            <div *ngIf="isReviewed(item) && hasFeedback(item)"
                  class="feedback">
                 <b>Feedback:</b>
                 <p>{{ item?.feedback }}</p>
+            </div>
+
+            <div *ngIf="isFeedbackSectionOpened(item.id)"
+                 class="feedback">
+                <textarea [(ngModel)]="item.feedback" matInput></textarea>
             </div>
         </mat-card-content>
 
@@ -121,6 +126,14 @@
                     [disabled]="!isReviewed(item)"
                     mat-button>
                 <mat-icon>restore</mat-icon>
+            </button>
+
+            <button *ngIf="!isReviewed(item)"
+                    class="feedback-toggle"
+                    [disabled]="isReviewed(item)"
+                    (click)="toogleFeedbackSection(item.id)"
+                    mat-button>
+                <mat-icon>message</mat-icon>
             </button>
         </mat-card-footer>
     </mat-card>

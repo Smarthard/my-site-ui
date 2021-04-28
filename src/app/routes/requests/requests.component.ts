@@ -14,6 +14,8 @@ export class RequestsComponent implements OnInit {
     reviewedRequests$: Observable<Request[]>;
     unreviewedRequests$: Observable<Request[]>;
 
+    feedbackSectionsStateMap = new Map<number, boolean>();
+
     constructor(
         private requestsService: ShikiRequestsService
     ) {}
@@ -129,5 +131,15 @@ export class RequestsComponent implements OnInit {
 
     trackById(index, item) {
         return item.id;
+    }
+
+    isFeedbackSectionOpened(requestId: number) {
+        return !!this.feedbackSectionsStateMap.get(requestId);
+    }
+
+    toogleFeedbackSection(requestId: number) {
+        const state = !this.feedbackSectionsStateMap.get(requestId);
+
+        this.feedbackSectionsStateMap.set(requestId, state);
     }
 }

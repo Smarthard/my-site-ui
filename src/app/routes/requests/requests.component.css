@@ -60,6 +60,11 @@ mat-card-footer {
     background-color: #00A1;
 }
 
+.feedback textarea {
+    width: 99%;
+    resize: vertical;
+}
+
 .feedback p {
     margin: 0 14px;
 }
@@ -74,6 +79,11 @@ mat-card-footer {
 
 .approved {
     color: green;
+}
+
+.feedback-toggle {
+    color: lightskyblue;
+    margin: 0 auto 0 0;
 }
 
 button:disabled {
