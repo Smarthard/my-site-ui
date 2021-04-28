@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Request} from '../../shared/api/Request';
 import {ShikiRequestsService} from '../../services/api/shiki-requests/shiki-requests.service';
 import {Observable, of} from 'rxjs';
-import {map, shareReplay, tap} from 'rxjs/operators';
+import {map, shareReplay} from 'rxjs/operators';
 
 @Component({
     selector: 'app-requests',
@@ -30,20 +30,19 @@ export class RequestsComponent implements OnInit {
 
     private _refreshRequests(): void {
         this.allRequests$ = this.requestsService.getRequests().pipe(
-            map((requests) => [...requests ]),
+            map((requests) => [...requests]),
             shareReplay(1),
         );
 
         this.reviewedRequests$ = this.allRequests$.pipe(
-            map((requests) => [ ...requests
+            map((requests) => [...requests
                 .filter((r) => r.reviewed)
                 .sort(RequestsComponent._sortByReviewDate)
             ]),
-            tap(console.log)
         );
 
         this.unreviewedRequests$ = this.allRequests$.pipe(
-            map((requests) => [ ...requests
+            map((requests) => [...requests
                 .filter((r) => !r.reviewed)
                 .sort(RequestsComponent._sortByCreatedDate)
             ]),
